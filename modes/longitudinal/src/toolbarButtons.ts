@@ -2,6 +2,7 @@
 // Only ways that you can pass in a custom React component for render :l
 import { ToolbarService } from '@ohif/core';
 import type { Button } from '@ohif/core/types';
+import { primary3D } from 'extensions/cornerstone/src/hps/primary3D';
 
 const { createButton } = ToolbarService;
 
@@ -108,6 +109,117 @@ const toolbarButtons: Button[] = [
       ],
     },
   },
+  // New Tool Addition
+  {
+    id: 'StackScroll',
+    uiType: 'ohif.toolButton',
+    props: {
+      icon: 'tool-stack-scroll',
+      label: 'Stack Scroll',
+      commands: setToolActiveToolbar,
+      evaluate: 'evaluate.cornerstoneTool',
+    },
+  },
+  {
+    id: 'Reset View',
+    uiType: 'ohif.toolButton',
+    props: {
+      icon: 'tool-reset',
+      label: 'Reset View',
+      commands: 'resetViewport',
+      evaluate: 'evaluate.action',
+    },
+  },
+  {
+    id: 'Rotate Right',
+    uiType: 'ohif.toolButton',
+    props: {
+      icon: 'tool-rotate-right',
+      label: 'Rotate Right',
+      commands: 'rotateViewportCW',
+      evaluate: [
+        'evaluate.action',
+        {
+          name: 'evaluate.viewport.supported',
+          unsupportedViewportTypes: ['video'],
+        },
+      ],
+    },
+  },
+  {
+    id: 'Flip Horizontal',
+    uiType: 'ohif.toolButton',
+    props: {
+      icon: 'tool-flip-horizontal',
+      label: 'Flip Horizontal',
+      commands: 'flipViewportHorizontal',
+      evaluate: [
+        'evaluate.viewportProperties.toggle',
+        {
+          name: 'evaluate.viewport.supported',
+          unsupportedViewportTypes: ['video', 'volume3d'],
+        },
+      ],
+    },
+  },
+
+  {
+    id: 'Angle',
+    uiType: 'ohif.toolButton',
+    props: {
+      icon: 'tool-angle',
+      label: 'Angle',
+      commands: setToolActiveToolbar,
+      evaluate: 'evaluate.cornerstoneTool',
+    },
+  },
+  {
+    id: 'Magnify',
+    uiType: 'ohif.toolButton',
+    props: {
+      icon: 'tool-magnify',
+      label: 'Zoom-in',
+      commands: setToolActiveToolbar,
+      evaluate: [
+        'evaluate.cornerstoneTool',
+        {
+          name: 'evaluate.viewport.supported',
+          unsupportedViewportTypes: ['video'],
+        },
+      ],
+    },
+  },
+  {
+    id: 'Advanced-Magnify',
+    uiType: 'ohif.toolButton',
+    props: {
+      icon: 'icon-tool-loupe',
+      label: 'Magnify Probe',
+      commands: setToolActiveToolbar,
+      evaluate: [
+        'evaluate.cornerstoneTool.toggle.ifStrictlyDisabled',
+        {
+          name: 'evaluate.viewport.supported',
+          unsupportedViewportTypes: ['video'],
+        },
+      ],
+    },
+  },
+  {
+    id: 'Report',
+    uiType: 'ohif.toolButton',
+    props: {
+      icon: 'report',
+      label: 'Report',
+      commands: [
+        {
+          commandName: 'openReport',
+          context: 'CORNERSTONE',
+        },
+      ],
+      // evaluate: 'evaluate.cornerstoneTool',
+    },
+  },
   {
     id: 'Zoom',
     uiType: 'ohif.toolButton',
@@ -205,32 +317,46 @@ const toolbarButtons: Button[] = [
       },
     },
   },
-  // {
-  //   id: 'Undo',
-  //   uiType: 'ohif.toolButton',
-  //   props: {
-  //     type: 'tool',
-  //     icon: 'prev-arrow',
-  //     label: 'Undo',
-  //     commands: {
-  //       commandName: 'undo',
-  //     },
-  //     evaluate: 'evaluate.action',
-  //   },
-  // },
-  // {
-  //   id: 'Redo',
-  //   uiType: 'ohif.toolButton',
-  //   props: {
-  //     type: 'tool',
-  //     icon: 'next-arrow',
-  //     label: 'Redo',
-  //     commands: {
-  //       commandName: 'redo',
-  //     },
-  //     evaluate: 'evaluate.action',
-  //   },
-  // },
+
+  {
+    id: 'Next Case',
+    uiType: 'ohif.toolButton',
+    props: {
+      type: 'tool',
+      icon: 'nexticon',
+      label: 'Next Case',
+      commands: {
+        commandName: 'nextcase',
+      },
+      evaluate: 'evaluate.action',
+    },
+  },
+  {
+    id: 'Undo',
+    uiType: 'ohif.toolButton',
+    props: {
+      type: 'tool',
+      icon: 'prev-arrow',
+      label: 'Undo',
+      commands: {
+        commandName: 'undo',
+      },
+      evaluate: 'evaluate.action',
+    },
+  },
+  {
+    id: 'Redo',
+    uiType: 'ohif.toolButton',
+    props: {
+      type: 'tool',
+      icon: 'next-arrow',
+      label: 'Redo',
+      commands: {
+        commandName: 'redo',
+      },
+      evaluate: 'evaluate.action',
+    },
+  },
 ];
 
 export default toolbarButtons;

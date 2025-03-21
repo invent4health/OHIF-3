@@ -239,7 +239,8 @@ const SidePanel = ({
       }
 
       setActiveTabIndex(activeTabIndex);
-
+      // const activeTabName = tabs[activeTabIndex]?.name;
+      // console.log("Active Tab Name:", activeTabName);
       if (onActiveTabIndexChange) {
         onActiveTabIndexChange({ activeTabIndex });
       }
@@ -250,6 +251,7 @@ const SidePanel = ({
   useEffect(() => {
     updatePanelOpen(isExpanded);
   }, [isExpanded, updatePanelOpen]);
+
 
   useEffect(() => {
     setStyleMap(

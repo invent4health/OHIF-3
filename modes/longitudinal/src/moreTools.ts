@@ -20,7 +20,7 @@ const moreTools = [
       evaluate: 'evaluate.group.promoteToPrimaryIfCornerstoneToolNotActiveInTheList',
       primary: createButton({
         id: 'Reset',
-        icon: 'tool-reset',
+        icon: 'MoreIcon',
         tooltip: 'Reset View',
         label: 'Reset',
         commands: 'resetViewport',

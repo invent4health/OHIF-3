@@ -4,6 +4,7 @@ import { id } from './id';
 import initToolGroups from './initToolGroups';
 import toolbarButtons from './toolbarButtons';
 import moreTools from './moreTools';
+import imgMode from './imgMode';
 
 // Allow this mode by excluding non-imaging modalities such as SR, SEG
 // Also, SM is not a simple imaging modalities, so exclude it.
@@ -20,6 +21,7 @@ const ohif = {
 const cornerstone = {
   measurements: '@ohif/extension-cornerstone.panelModule.panelMeasurement',
   segmentation: '@ohif/extension-cornerstone.panelModule.panelSegmentation',
+  report: '@ohif/extension-cornerstone.panelModule.PanelReport',
 };
 
 const tracked = {
@@ -74,6 +76,27 @@ const extensionDependencies = {
 
 function modeFactory({ modeConfiguration }) {
   let _activatePanelTriggersSubscriptions = [];
+  // const checkUnsavedChanges = () => {
+  //   const hasUnsavedChanges = JSON.parse(localStorage.getItem('hasUnsavedChanges'));
+  //   // console.log("Unsaved changes status:", hasUnsavedChanges); // Debugging
+  //   if (hasUnsavedChanges) {
+  //     return 'You have unsaved changes. Are you sure you want to leave?';
+  //   }
+  //   return undefined; // No alert if no unsaved changes
+  // };
+  const beforeUnloadHandler = event => {
+    const isSaved = JSON.parse(localStorage.getItem('isSaved'));
+    const isEdited = JSON.parse(localStorage.getItem('isEdited'));
+
+    if (isEdited && !isSaved) {
+      localStorage.setItem('isSaved', JSON.stringify(false));
+      localStorage.setItem('isEdited', JSON.stringify(false));
+
+      event.preventDefault(); // Standard method
+      event.returnValue = ''; // Ensures browser warning shows up
+    }
+  };
+
   return {
     // TODO: We're using this as a route segment
     // We should not be.
@@ -92,8 +115,10 @@ function modeFactory({ modeConfiguration }) {
       // Init Default and SR ToolGroups
       initToolGroups(extensionManager, toolGroupService, commandsManager);
 
-      toolbarService.addButtons([...toolbarButtons, ...moreTools]);
+      toolbarService.addButtons([...toolbarButtons, ...moreTools, ...imgMode]);
       toolbarService.createButtonSection('primary', [
+        'MoreTools',
+        'StackScroll',
         'MeasurementTools',
         'Zoom',
         'Pan',
@@ -102,7 +127,17 @@ function modeFactory({ modeConfiguration }) {
         'Capture',
         'Layout',
         'Crosshairs',
-        'MoreTools',
+        'Advanced-Magnify',
+        // 'Undo',
+        // 'Redo',
+        'Reset View',
+        'Rotate Right',
+        'Flip Horizontal',
+        'Angle',
+        'Magnify',
+        'Next Case',
+        'ImgMode',
+        // 'Report',
       ]);
 
       // // ActivatePanel event trigger for when a segmentation or measurement is added.
@@ -133,6 +168,7 @@ function modeFactory({ modeConfiguration }) {
       //   ),
       //   true,
       // ];
+      window.addEventListener('beforeunload', beforeUnloadHandler);
     },
     onModeExit: ({ servicesManager }: withAppTypes) => {
       const {
@@ -153,6 +189,7 @@ function modeFactory({ modeConfiguration }) {
       syncGroupService.destroy();
       segmentationService.destroy();
       cornerstoneViewportService.destroy();
+      window.removeEventListener('beforeunload', beforeUnloadHandler);
     },
     validationTags: {
       study: [],
@@ -182,7 +219,7 @@ function modeFactory({ modeConfiguration }) {
             props: {
               leftPanels: [tracked.thumbnailList],
               leftPanelResizable: true,
-              rightPanels: [cornerstone.segmentation, tracked.measurements],
+              rightPanels: [cornerstone.segmentation, tracked.measurements, cornerstone.report],
               rightPanelClosed: true,
               rightPanelResizable: true,
               viewports: [
@@ -250,4 +287,4 @@ const mode = {
 };
 
 export default mode;
-export { initToolGroups, moreTools, toolbarButtons };
+export { initToolGroups, moreTools, toolbarButtons, imgMode };

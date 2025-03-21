@@ -7,7 +7,7 @@ export default {
         commandName: 'showCornerstoneContextMenu',
         commandOptions: {
           requireNearbyToolData: true,
-          menuId: 'measurementsContextMenu',
+          menuId: '',
         },
       },
     ],

@@ -49,6 +49,7 @@
     "i18next": "^17.0.3"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "webpack": "5.94.0",
     "webpack-merge": "^5.7.3"
   }

@@ -17,7 +17,7 @@ module.exports = {
       inter: ['Inter', 'sans-serif'],
     },
     colors: {
-      overlay: 'rgba(0, 0, 0, 0.8)',
+      overlay: 'rgba(0, 0, 0, 0.9)',
       transparent: 'transparent',
       black: '#000',
       white: '#fff',
@@ -32,7 +32,7 @@ module.exports = {
         light: '#a0a0a0', // Light grey
         main: '#808080',  // Standard grey
         dark: '#404040',  // Dark grey
-        active: '#696969', // Medium grey
+        active: '#F8F8FF', // Medium grey
       },
       inputfield: {
         main: '#3a3a3a',
@@ -49,7 +49,7 @@ module.exports = {
       },
 
       common: {
-        bright: '#e1e1e1',
+        bright: '#fff',
         light: '#a19fad',
         main: '#fff',
         dark: '#726f7e',
@@ -207,7 +207,7 @@ module.exports = {
     },
     borderColor: theme => ({
       ...theme('colors'),
-      DEFAULT: theme('colors.gray.300', 'currentColor'),
+      DEFAULT: theme('colors.grey.300', 'currentColor'),
     }),
     boxShadow: {
       xs: '0 0 0 1px rgba(0, 0, 0, 0.05)',
@@ -232,7 +232,7 @@ module.exports = {
       'not-allowed': 'not-allowed',
     },
     fill: {
-      current: 'currentColor',
+      current: '#F8F8FF',
     },
     fontSize: {
       xxs: '0.6875rem', // 11px

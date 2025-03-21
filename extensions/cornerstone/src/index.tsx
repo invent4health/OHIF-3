@@ -51,6 +51,7 @@ import { useMeasurements } from './hooks/useMeasurements';
 import getPanelModule from './getPanelModule';
 import PanelSegmentation from './panels/PanelSegmentation';
 import PanelMeasurement from './panels/PanelMeasurement';
+import PanelReport from './panels/PanelReport';
 import DicomUpload from './components/DicomUpload/DicomUpload';
 import { useSegmentations } from './hooks/useSegmentations';
 import { StudySummaryFromMetadata } from './components/StudySummaryFromMetadata';
@@ -255,6 +256,7 @@ export {
   PanelSegmentation,
   PanelMeasurement,
   DicomUpload,
+  PanelReport,
   StudySummaryFromMetadata,
   CornerstoneViewportDownloadForm,
   utils,

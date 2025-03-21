@@ -45,6 +45,14 @@ export default class PanelService extends PubSubService {
     return PanelPosition;
   }
 
+  public getPanelStatus(panelId: string): { position: PanelPosition | null; isActive: boolean } {
+    for (const [position, panels] of this._panelsGroups.entries()) {
+      if (panels.some(panel => panel.id === panelId)) {
+        return { position, isActive: true };
+      }
+    }
+    return { position: null, isActive: false };
+  }
   private _getPanelComponent(panelId: string) {
     const entry = this._extensionManager.getModuleEntry(panelId);
 
@@ -176,6 +184,7 @@ export default class PanelService extends PubSubService {
     );
   }
 
+
   public onModeExit(): void {
     this.reset();
   }
@@ -192,6 +201,7 @@ export default class PanelService extends PubSubService {
    */
   public activatePanel(panelId: string, forceActive = false): void {
     this._broadcastEvent(EVENTS.ACTIVATE_PANEL, { panelId, forceActive });
+
   }
 
   /**

@@ -86,6 +86,7 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
           buttonSection="secondary"
         />
       }
+      //Patient information is hidden
       // PatientInfo={
       //   appConfig.showPatientInfo !== PatientInfoVisibility.DISABLED && (
       //     <HeaderPatientInfo

@@ -30,7 +30,7 @@ export const ListView = (props: IconProps) => (
         x2="18.5"
         y2="8"
         id="Line-2"
-        stroke="currentColor"
+        stroke="white"
         strokeLinecap="round"
       ></line>
       <line
@@ -39,7 +39,7 @@ export const ListView = (props: IconProps) => (
         x2="18.5"
         y2="12"
         id="Line-2"
-        stroke="currentColor"
+        stroke="white"
         strokeLinecap="round"
       ></line>
       <line
@@ -48,26 +48,26 @@ export const ListView = (props: IconProps) => (
         x2="18.5"
         y2="16"
         id="Line-2"
-        stroke="currentColor"
+        stroke="white"
         strokeLinecap="round"
       ></line>
       <circle
         id="Oval"
-        fill="currentColor"
+        fill="white"
         cx="7"
         cy="8"
         r="1"
       ></circle>
       <circle
         id="Oval"
-        fill="currentColor"
+        fill="white"
         cx="7"
         cy="12"
         r="1"
       ></circle>
       <circle
         id="Oval"
-        fill="currentColor"
+        fill="white"
         cx="7"
         cy="16"
         r="1"

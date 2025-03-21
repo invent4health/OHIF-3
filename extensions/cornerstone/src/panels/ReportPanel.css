@@ -1,0 +1,177 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Container styling for the editor */
+.editor-container {
+  margin: 20px auto;
+  max-width: 1000px;
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+}
+
+/* Dropdown styling */
+#templateDropdown,
+#templateDropdownmenu {
+  padding: 8px 12px;
+  margin-right: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fff;
+  color: #495057;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#templateDropdownmenu {
+  padding: 4px 6px;
+  font-size: 11px;
+  border-radius: 5px;
+}
+
+#templateDropdown option {
+  color: #212529;
+  background-color: #ffffff;
+}
+
+/* Button styling */
+.button-container {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.button-container button,
+.save-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-button {
+  background-color: grey;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 2px;
+}
+
+.button-container button:hover,
+.save-button:hover {
+  background-color: #0056b3;
+}
+
+button:active {
+  background-color: #004085;
+}
+
+/* Header styling */
+.editor-container h1 {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Styling the editor */
+.editor-wrapper {
+  flex-grow: 1;
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.editor-container .editor {
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  padding: 20px;
+  font-size: 16px;
+  color: #212529;
+  line-height: 1.5;
+  background-color: #ffffff;
+  min-height: 400px;
+  width: 100%;
+  resize: both;
+  overflow: auto;
+}
+
+.editor-container .editor:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+/* Report styling */
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+}
+
+.report-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.template-label.white {
+  color: white;
+}
+
+/* Panel section */
+.PanelSection.Content {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* Patient Info Styling */
+.patient-info-container {
+  flex: 0 0 auto;
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color:#404040;
+}
+
+.patient-info-container h2 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.patient-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 10px;
+  column-gap: 20px;
+}
+
+.patient-info-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-label {
+  font-weight: bold;
+  color: #555;
+}
+
+.info-value {
+color: white;
+}

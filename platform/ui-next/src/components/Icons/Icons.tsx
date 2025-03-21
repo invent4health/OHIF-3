@@ -73,6 +73,7 @@ import IconTransferring from './Sources/IconTransferring';
 import Alert from './Sources/Alert';
 import AlertOutline from './Sources/AlertOutline';
 import Clipboard from './Sources/Clipboard';
+import Report from './Sources/Report';
 import {
   Tool3DRotate,
   ToolAngle,
@@ -195,6 +196,9 @@ import NotificationWarning from './Sources/NotificationWarning';
 import ArrowRight from './Sources/ArrowRight';
 import ChevronLeft from './Sources/ChevronLeft';
 import StatusAlert from './Sources/StatusAlert';
+import NextIcon from './Sources/Next';
+import MoreIcon from './Sources/MoreIcon';
+import DottedCircle from './Sources/DottedCircle';
 //
 //
 type IconProps = React.HTMLAttributes<SVGElement>;
@@ -571,6 +575,10 @@ export const Icons = {
   OHIFLogoColorDarkBackground,
   Magnifier,
   Pencil,
+  Report,
+  NextIcon,
+  MoreIcon,
+  DottedCircle,
   //
   //
   //
@@ -708,6 +716,10 @@ export const Icons = {
   'layout-common-2x2': (props: IconProps) => LayoutCommon2x2(props),
   'layout-common-2x3': (props: IconProps) => LayoutCommon2x3(props),
   pencil: (props: IconProps) => Pencil(props),
+  report: (props: IconProps) => Report(props),
+  nexticon: (props: IconProps) => NextIcon(props),
+  moreicon: (props: IconProps) => MoreIcon(props),
+  dottedcircle: (props: IconProps) => DottedCircle(props),
   'icon-list-view': (props: IconProps) => ListView(props),
   'chevron-menu': 'chevron-down',
   'icon-status-alert': (props: IconProps) => Alert(props),

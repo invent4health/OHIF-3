@@ -26,7 +26,7 @@ export const ThumbnailView = (props: IconProps) => (
       ></rect>
       <rect
         id="Rectangle"
-        fill="currentColor"
+        fill="white"
         x="6"
         y="6"
         width="5"
@@ -35,7 +35,7 @@ export const ThumbnailView = (props: IconProps) => (
       ></rect>
       <rect
         id="Rectangle"
-        fill="currentColor"
+        fill="white"
         x="13"
         y="6"
         width="5"
@@ -44,7 +44,7 @@ export const ThumbnailView = (props: IconProps) => (
       ></rect>
       <rect
         id="Rectangle"
-        fill="currentColor"
+        fill="white"
         x="6"
         y="13"
         width="5"
@@ -53,7 +53,7 @@ export const ThumbnailView = (props: IconProps) => (
       ></rect>
       <rect
         id="Rectangle"
-        fill="currentColor"
+        fill="white"
         x="13"
         y="13"
         width="5"

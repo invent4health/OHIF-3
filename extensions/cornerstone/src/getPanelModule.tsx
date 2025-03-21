@@ -3,7 +3,8 @@ import React from 'react';
 import { Toolbox } from '@ohif/ui-next';
 import PanelSegmentation from './panels/PanelSegmentation';
 import ActiveViewportWindowLevel from './components/ActiveViewportWindowLevel';
-import PanelMeasurement from './panels/PanelMeasurement';
+import PanelMeasurement from './panels/PanelMeasurement'
+import PanelReport from './panels/PanelReport';
 
 const getPanelModule = ({ commandsManager, servicesManager, extensionManager }: withAppTypes) => {
   const wrappedPanelSegmentation = ({ configuration }) => {
@@ -69,6 +70,16 @@ const getPanelModule = ({ commandsManager, servicesManager, extensionManager }: 
       />
     );
   };
+  const wrappedPanelReport = ({ configuration }) => {
+    return (
+      <PanelReport
+        commandsManager={commandsManager}
+        servicesManager={servicesManager}
+        extensionManager={extensionManager}
+        configuration={configuration}
+      />
+    );
+  };
 
   return [
     {
@@ -83,6 +94,13 @@ const getPanelModule = ({ commandsManager, servicesManager, extensionManager }: 
       iconLabel: 'Measure',
       label: 'Measurement',
       component: wrappedPanelMeasurement,
+    },
+    {
+      name: 'PanelReport',
+      iconName: 'report',
+      iconLabel: 'Report',
+      label: 'Report',
+      component: wrappedPanelReport,
     },
     {
       name: 'panelSegmentation',

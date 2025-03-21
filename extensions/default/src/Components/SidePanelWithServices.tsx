@@ -109,6 +109,7 @@ const SidePanelWithServices = ({
       onOpen={handleOpen}
       onClose={handleClose}
       onActiveTabIndexChange={handleActiveTabIndexChange}
+      
     />
   );
 };

@@ -31,6 +31,11 @@ import toggleVOISliceSync from './utils/toggleVOISliceSync';
 import { usePositionPresentationStore, useSegmentationPresentationStore } from './stores';
 import { toolNames } from './initCornerstoneTools';
 import CornerstoneViewportDownloadForm from './utils/CornerstoneViewportDownloadForm';
+import contextmenu from './contextmenu';
+//
+import getCornerstoneBlendMode from './utils/getCornerstoneBlendMode';
+import Report from './Report';
+import { DicomMetadataStore } from '@ohif/core';
 const { DefaultHistoryMemo } = csUtils.HistoryMemo;
 const toggleSyncFunctions = {
   imageSlice: toggleImageSliceSync,
@@ -54,6 +59,7 @@ function commandsModule({
     colorbarService,
     hangingProtocolService,
     syncGroupService,
+    displaySetService,
   } = servicesManager.services;
 
   const { measurementServiceSource } = this;
@@ -66,25 +72,93 @@ function commandsModule({
     const viewport = _getActiveViewportEnabledElement();
     return toolGroupService.getToolGroupForViewport(viewport.id);
   }
+  function formatPN(name) {
+    if (!name) {
+      return;
+    }
 
+    let nameToUse = name.Alphabetic ?? name;
+    if (typeof nameToUse === 'object') {
+      nameToUse = '';
+    }
+
+    // Convert the first ^ to a ', '. String.replace() only affects
+    // the first appearance of the character.
+    const commaBetweenFirstAndLast = nameToUse.replace('^', ', ');
+
+    // Replace any remaining '^' characters with spaces
+    const cleaned = commaBetweenFirstAndLast.replace(/\^/g, ' ');
+
+    // Trim any extraneous whitespace
+    return cleaned.trim();
+  }
   const actions = {
     /**
      * Generates the selector props for the context menu, specific to
      * the cornerstone viewport, and then runs the context menu.
      */
+    // showCornerstoneContextMenu: options => {
+    //   const services=servicesManager.services;
+    //   const element = _getActiveViewportEnabledElement()?.viewport?.element;
+
+    //   const optionsToUse = { ...options, element };
+    //   const { useSelectedAnnotation, nearbyToolData, event } = optionsToUse;
+
+    //   // This code is used to invoke the context menu via keyboard shortcuts
+    //   if (useSelectedAnnotation && !nearbyToolData) {
+    //     const firstAnnotationSelected = getFirstAnnotationSelected(element);
+    //     // filter by allowed selected tools from config property (if there is any)
+    //     const isToolAllowed =
+    //       !optionsToUse.allowedSelectedTools ||
+    //       optionsToUse.allowedSelectedTools.includes(firstAnnotationSelected?.metadata?.toolName);
+    //     if (isToolAllowed) {
+    //       optionsToUse.nearbyToolData = firstAnnotationSelected;
+    //     } else {
+    //       return;
+    //     }
+    //   }
+
+    //   optionsToUse.defaultPointsPosition = [];
+    //   // if (optionsToUse.nearbyToolData) {
+    //   //   optionsToUse.defaultPointsPosition = commandsManager.runCommand(
+    //   //     'getToolDataActiveCanvasPoints',
+    //   //     { toolData: optionsToUse.nearbyToolData }
+    //   //   );
+    //   // }
+
+    //   // TODO - make the selectorProps richer by including the study metadata and display set.
+    //   optionsToUse.selectorProps = {
+    //     toolName: optionsToUse.nearbyToolData?.metadata?.toolName,
+    //     value: optionsToUse.nearbyToolData,
+    //     uid: optionsToUse.nearbyToolData?.annotationUID,
+    //     nearbyToolData: optionsToUse.nearbyToolData,
+    //     event,
+    //     ...optionsToUse.selectorProps,
+    //   };
+    //   // this block when the above one is not
+    //   const { uiModalService } = servicesManager.services;
+    //   console.log('services avialbel', services.toolbarService);
+    //   console.log('uiservices',uiModalService)
+    //   if (uiModalService) {
+    //     uiModalService.show({
+    //       content: contextmenu,
+    //     });
+    //   }
+    //   commandsManager.run(options, optionsToUse);
+    // },
     showCornerstoneContextMenu: options => {
+      const services = servicesManager.services;
       const element = _getActiveViewportEnabledElement()?.viewport?.element;
 
       const optionsToUse = { ...options, element };
       const { useSelectedAnnotation, nearbyToolData, event } = optionsToUse;
 
-      // This code is used to invoke the context menu via keyboard shortcuts
       if (useSelectedAnnotation && !nearbyToolData) {
         const firstAnnotationSelected = getFirstAnnotationSelected(element);
-        // filter by allowed selected tools from config property (if there is any)
         const isToolAllowed =
           !optionsToUse.allowedSelectedTools ||
           optionsToUse.allowedSelectedTools.includes(firstAnnotationSelected?.metadata?.toolName);
+
         if (isToolAllowed) {
           optionsToUse.nearbyToolData = firstAnnotationSelected;
         } else {
@@ -92,26 +166,37 @@ function commandsModule({
         }
       }
 
-      optionsToUse.defaultPointsPosition = [];
-      // if (optionsToUse.nearbyToolData) {
-      //   optionsToUse.defaultPointsPosition = commandsManager.runCommand(
-      //     'getToolDataActiveCanvasPoints',
-      //     { toolData: optionsToUse.nearbyToolData }
-      //   );
-      // }
+      if (optionsToUse.nearbyToolData) {
+        optionsToUse.defaultPointsPosition = commandsManager.runCommand(
+          'getToolDataActiveCanvasPoints',
+          { toolData: optionsToUse.nearbyToolData }
+        );
 
-      // TODO - make the selectorProps richer by including the study metadata and display set.
-      optionsToUse.selectorProps = {
-        toolName: optionsToUse.nearbyToolData?.metadata?.toolName,
-        value: optionsToUse.nearbyToolData,
-        uid: optionsToUse.nearbyToolData?.annotationUID,
-        nearbyToolData: optionsToUse.nearbyToolData,
-        event,
-        ...optionsToUse.selectorProps,
-      };
+        optionsToUse.selectorProps = {
+          toolName: optionsToUse.nearbyToolData?.metadata?.toolName,
+          value: optionsToUse.nearbyToolData,
+          uid: optionsToUse.nearbyToolData?.annotationUID,
+          nearbyToolData: optionsToUse.nearbyToolData,
+          event,
+          ...optionsToUse.selectorProps,
+        };
 
-      commandsManager.run(options, optionsToUse);
+        commandsManager.run(options, optionsToUse);
+      } else {
+        const { uiModalService } = servicesManager.services;
+
+        if (uiModalService) {
+          uiModalService.show({
+            content: contextmenu,
+            contentProps: {
+              commands: servicesManager.services,
+              onClose: () => uiModalService.hide(),
+            },
+          });
+        }
+      }
     },
+
     updateStoredSegmentationPresentation: ({ displaySet, type }) => {
       const { addSegmentationPresentationItem } = useSegmentationPresentationStore.getState();
 
@@ -878,6 +963,109 @@ function commandsModule({
       });
       imageData.modified();
     },
+    // New Tools
+
+    // activateReportpanel: () => {
+    //   const panelService=servicesManager.services.panelService;
+    //   const t=panelService.activatePanel('@ohif/extension-cornerstone.panelModule.PanelReport', true);
+    //   console.log(t);
+    // },
+
+    imgMode: ({ mode }) => {
+      try {
+        const blendMode = getCornerstoneBlendMode(mode); // Call your function here
+
+        // Assuming there's a way to set blend mode in your application context
+        console.log(`Setting blend mode: ${blendMode}`);
+        // Replace this with the actual logic to apply the blend mode in Cornerstone
+      } catch (error) {
+        console.error(`Error setting blend mode: ${error.message}`);
+      }
+    },
+    nextcase: async () => {
+      const currentStudyUID = DicomMetadataStore.getStudyInstanceUIDs();
+
+      if (!currentStudyUID) {
+        console.warn('Current StudyInstanceUID not found.');
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `http://3.77.246.193/radshare-appapi/api/radshareopenapi/getNextStudyIUID/${currentStudyUID}`
+        );
+        const nextStudyUID = await response.text();
+        console.log(nextStudyUID);
+
+        if (nextStudyUID) {
+          window.location.href = `http://13.202.29.77:3000/viewer?StudyInstanceUIDs=${nextStudyUID}`;
+        } else {
+          console.warn('No next study UID returned from the API.');
+        }
+      } catch (error) {
+        console.error('Error fetching the next study UID:', error);
+      }
+    },
+    openReport: () => {
+      const { activeViewportId, viewports } = viewportGridService.getState();
+      const activeViewportSpecificData = viewports.get(activeViewportId);
+      const { displaySetInstanceUIDs } = activeViewportSpecificData;
+      const displaySetInstanceUID = displaySetInstanceUIDs[0];
+
+      const displaySets = displaySetService.activeDisplaySets;
+      const activeDisplaySet = displaySets.find(
+        ds => ds.displaySetInstanceUID === displaySetInstanceUID
+      );
+      let patientDetails = {
+        sopInstanceUID: 'Not Available',
+        patientName: 'Not Available',
+        patientID: 'Not Available',
+        patientAge: 'Not Available',
+        patientSex: 'Not Available',
+        performedProcedureStepStartDate: 'Not Available',
+        studyDescription: 'Not Available',
+      };
+      if (activeDisplaySet) {
+        // Access the first metadata entry
+        const firstMetadata = activeDisplaySet.images
+          ? activeDisplaySet.images[0] // For image stacks
+          : activeDisplaySet.instance; // For single instance
+
+        const sopInstanceUID = firstMetadata?.['00080018'] || firstMetadata?.SOPInstanceUID;
+        const patientName = firstMetadata?.['00100010'] || firstMetadata?.PatientName;
+        const patientID = firstMetadata?.['00100020'] || firstMetadata?.PatientID;
+        const patientAge = firstMetadata?.['00101010'] || firstMetadata?.PatientAge;
+        const patientSex = firstMetadata?.['00100040'] || firstMetadata?.PatientSex;
+        const performedProcedureStepStartDate =
+          firstMetadata?.['00400244'] || firstMetadata?.PerformedProcedureStepStartDate;
+        const studyDescription = firstMetadata?.['00081030'] || firstMetadata?.StudyDescription;
+
+        // Prepare the patient details as an object
+        patientDetails = {
+          sopInstanceUID: sopInstanceUID || 'Not Available',
+          patientName: formatPN(patientName),
+          patientID: patientID || 'Not Available',
+          patientAge: patientAge || 'Not Available',
+          patientSex: patientSex || 'Not Available',
+          performedProcedureStepStartDate: performedProcedureStepStartDate || 'Not Available',
+          studyDescription: studyDescription || 'Not Available',
+        };
+      }
+
+      const { uiModalService } = servicesManager.services;
+      if (uiModalService) {
+        uiModalService.show({
+          content: Report,
+          title: 'Report',
+          contentProps: {
+            onClose: () => uiModalService.hide(),
+            PatientInfo: patientDetails,
+          },
+          closeButton: false,
+          containerClassName: 'max-w-5xl h-screen flex items-center ',
+        });
+      }
+    },
 
     attachProtocolViewportDataListener: ({ protocol, stageIndex }) => {
       const EVENT = cornerstoneViewportService.EVENTS.VIEWPORT_DATA_CHANGED;
@@ -1363,6 +1551,9 @@ function commandsModule({
     redo: () => {
       DefaultHistoryMemo.redo();
     },
+    check: () => {
+      console.log('working');
+    },
   };
 
   const definitions = {
@@ -1629,6 +1820,18 @@ function commandsModule({
     deleteActiveAnnotation: {
       commandFn: actions.deleteActiveAnnotation,
     },
+    openReport: {
+      commandFn: actions.openReport,
+    },
+    nextcase: {
+      commandFn: actions.nextcase,
+    },
+    imgMode: {
+      commandFn: actions.imgMode,
+    },
+    // activateReportpanel: {
+    //   commandFn: actions.activateReportpanel,
+    // },
     undo: actions.undo,
     redo: actions.redo,
   };
