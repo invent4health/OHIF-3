@@ -26,7 +26,8 @@ const ContextMenu = ({ commands, onClose }) => {
       // Close the context menu after successful click
       onClose();
 
-      // console.log(`Activated ${buttonId}:`, button);
+      console.log(`Activated ${buttonId}:`, button);
+      console.log('toolbarService', toolbarService);
     } catch (error) {
       console.error('Context Menu Error:', error.message);
     }
@@ -34,10 +35,17 @@ const ContextMenu = ({ commands, onClose }) => {
 
   const availableButtons = commands?.toolbarService?.state?.buttons || {};
 
-  const contextMenuButtons = ['Zoom', 'Pan', 'Magnify', 'Rotate Right', 'Reset View'];
+  const contextMenuButtons = [
+    'Zoom',
+    'Pan',
+    'Magnify',
+    'Rotate Right',
+    'Reset View',
+    'MeasurementTools',
+  ];
 
   return (
- <div className="context-menu w-[100px]">
+    <div className="context-menu">
       <ul
         style={{
           listStyle: 'none',
